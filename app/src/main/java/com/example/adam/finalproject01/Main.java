@@ -5,14 +5,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.adam.finalproject01.GameLogic.Characters.Player;
 import com.example.adam.finalproject01.GameLogic.MazeLogic.Events.Event;
+import com.example.adam.finalproject01.GameLogic.MazeLogic.Events.RiddleEvents.Caesar;
+import com.example.adam.finalproject01.GameLogic.MazeLogic.Events.RiddleEvents.KeyboardEvent;
+import com.example.adam.finalproject01.GameLogic.MazeLogic.Events.RiddleEvents.RiddleEvent;
 import com.example.adam.finalproject01.GameLogic.MazeLogic.PlayerMaze;
+
+import java.io.BufferedReader;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -38,13 +46,17 @@ public class Main extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
 
     private View mContentView;
-    private TextView content;
+    private TextView backGround;
     private View mControlsView;
+    private TextView container;
     private Button[] directions;
     private boolean mVisible;
     private PlayerMaze tm;
     private Player p;
     private int i;
+    private EditText editText;
+    private Main m=this;
+    BufferedReader buf ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +64,24 @@ public class Main extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         p=new Player(0,0,new PlayerMaze(10,10,this));
-
+        // set gui variables
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
-        content= (TextView)findViewById(R.id.fullscreen_content);
+        backGround = (TextView)findViewById(R.id.fullscreen_content);
+        container= (TextView)findViewById(R.id.textView);
+        container.setMovementMethod(new ScrollingMovementMethod());
+        editText =(EditText)findViewById(R.id.input);
+        backGround.setText("");
+        backGround.setVisibility(View.INVISIBLE);
+        //Caesar c=new Caesar(backGround);
+        editText.setVisibility(View.INVISIBLE);
+        //editText.addTextChangedListener(c);
+
         setButtons();
 
+
+        //Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
 
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -181,7 +204,7 @@ public class Main extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
-
+    //set buttons functionality
     private void setButtons()
     {
         directions= new Button[4];
@@ -189,12 +212,22 @@ public class Main extends AppCompatActivity {
         directions[1]=(Button)findViewById(R.id.North);
         directions[2]=(Button)findViewById(R.id.East);
         directions[3]=(Button)findViewById(R.id.South);
-
+        final Main m=this;
+        p.getRoom(3,5).setE(new KeyboardEvent(this.getApplicationContext().getString(R.string.t1)
+                , this, new Caesar(editText)));
         directions[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(p.moveWest()) setCurrentEvent();
+                if(p.moveWest())
+                {
+                    setCurrentEvent();
+                   // hideButtons();
+
+                    Toast.makeText(m, "Moving westh"+ p.getX()+"h"+p.getY(), Toast.LENGTH_SHORT).show();
+
+                }
+                else Toast.makeText(m, "You can't go there", Toast.LENGTH_SHORT).show();
                 //directions[0].setVisibility(View.INVISIBLE);
 
             }
@@ -202,52 +235,141 @@ public class Main extends AppCompatActivity {
         directions[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (p.moveNorth()) setCurrentEvent();
+                if (p.moveNorth())
+                {
+                    setCurrentEvent();
+                   // hideButtons();
+
+                    Toast.makeText(m, "Moving north", Toast.LENGTH_SHORT).show();
+
+                }
+                else Toast.makeText(m, "You can't go there"+ p.getX()+"h"+p.getY(), Toast.LENGTH_SHORT).show();
+
 
             }
         });
         directions[2].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (p.moveEast()) setCurrentEvent();
+                if (p.moveEast()) {
+                    // p.getCurrentRoom().setE(new LightEvent(getString(R.string.magnometric).toString(), TYPE_LIGHT, m));
+
+                    setCurrentEvent();
+                  //  hideButtons();
+
+                    Toast.makeText(m, "Moving east", Toast.LENGTH_SHORT).show();
+
+                } else
+                    Toast.makeText(m, "You can't go there" + p.getX() + "h" + p.getY(), Toast.LENGTH_SHORT).show();
+
                 //directions[0].setVisibility(View.VISIBLE);
             }
         });
-        directions[3].setOnClickListener(new View.OnClickListener()
-        {
+        directions[3].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (p.moveSouth())
-                {
+                //boolean flag=false;
+                if (directions[3].getText().equals("done")) {
+                 //   showButtons();
                     setCurrentEvent();
+                } else {
+                    if (p.moveSouth()) {
+                     //   hideButtons();
+                        setCurrentEvent();
+                        //directions[3].setText("done;");
+                        Toast.makeText(m, "Moving south" + p.getX() + "h" + p.getY(), Toast.LENGTH_SHORT).show();
+
+                    } else Toast.makeText(m, "You can't go there", Toast.LENGTH_SHORT).show();
+
                 }
+
             }
         });
     }
 
 
-        private void buttonVisibility(Boolean visible)
-        {
-            int visibility;
 
-            if (visible) visibility=View.VISIBLE;
-            else visibility=View.INVISIBLE;
-            for (i=0;i<directions.length;i++) directions[i].setVisibility(visibility);
+
+        public void hideButtons()
+        {
+
+
+
+
+                int visibility=View.INVISIBLE;
+                directions[3].setText("done");
+
+            for (i=0;i<directions.length-1;i++) directions[i].setVisibility(visibility);
+
 
         }
 
+    public void showButtons()
+    {
+
+        int visibility=View.VISIBLE;
+        directions[3].setText("east");
+
+
+        for (i=0;i<directions.length-1;i++) directions[i].setVisibility(visibility);
+
+
+    }
+        //prepare current event to be executed by applicatio or finished
         private void setCurrentEvent()
         {
             Event e= p.getCurrentRoom().getE();
-            content.setText(e.getDescription());
-            e.startEvent();
-            buttonVisibility(e.getIsFinished());
+            container.setText(e.getDescription());
+            if(!p.getCurrentRoom().getIsExit()) {
+                if (e.getClass().equals(RiddleEvent.class) && e.getIsFinished() == false) {
 
+
+                    RiddleEvent re = (RiddleEvent) e;
+                    editText.setVisibility(View.VISIBLE);
+                    if (re.compare(editText.getText().toString())) {
+                        e.finish();
+                        // container.setText("finished");
+                        editText.setVisibility(View.INVISIBLE);
+                    }
+                } else if (e.getClass().equals(KeyboardEvent.class) && e.getIsFinished() == false) {
+                    KeyboardEvent ke = (KeyboardEvent) e;
+                    editText.setVisibility(View.VISIBLE);
+                    Toast.makeText(m, ke.twistAnswer(editText.getText().toString()), Toast.LENGTH_SHORT).show();
+                    if (ke.compare(ke.twistAnswer(editText.getText().toString()))) {
+                        e.finish();
+                        // container.setText("finished");
+                        editText.setVisibility(View.INVISIBLE);
+                    }
+
+                } else editText.setVisibility(View.INVISIBLE);
+                if (e.getIsFinished() == false) {
+                    hideButtons();
+                    e.startEvent();
+                } else showButtons();
+                //buttonVisibility(e.getIsFinished());
+            }
+            else
+            {
+                hideButtons();
+                directions[3].setVisibility(View.INVISIBLE);
+            }
 
         }
 
+/*
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Toast.makeText(this, keyCode, Toast.LENGTH_SHORT).show();
+        backGround.setText(keyCode);
+        return true;
+    }
+*/
 
-  }
+
+
+
+
+}
 
 
 

@@ -1,15 +1,22 @@
 package com.example.adam.finalproject01.GameLogic.MazeLogic.Events;
 
+import com.example.adam.finalproject01.Main;
+
+import java.util.Observable;
+
 /**
  * Created by Adam on 26/05/16.
  */
-public abstract class Event
+public abstract class Event extends Observable
 {
     protected String description;
     protected Boolean isFinished =false;
+    protected Main m;
 
-    Event(String description)
+    public Event(String description, Main m)
     {
+        this.m=m;
+
         this.description=description;
     }
 
@@ -41,6 +48,11 @@ public abstract class Event
     {
         isFinished =true;
         description="you have been there";
+        //setChanged();
+       // notifyObservers(true);
+
+
+      //  m.buttonVisibility(true);
     }
 
 

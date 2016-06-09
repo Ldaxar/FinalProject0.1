@@ -3,4 +3,40 @@
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="magnometric">
+Horde of angry monsters is passing through this room. Better look for shadow to hide yourself if you want to survive.
+    </string>
+    <string name="empty">
+        This room is empty. Gather magnetic power to unlock doors.
+
+    </string>
+
+    <string name="r1">
+        What is greater than God,
+more evil than the devil,
+the poor have it,
+the rich need it,
+and if you eat it, you\'ll die?$Nothing
+    </string>
+
+    <string name="r2">
+Who makes it, has no need of it.
+Who buys it, has no use for it.
+Who uses it can neither see nor feel it.
+What is it?$coffin
+    </string>
+
+    <string name="r3">
+Paul\'s height is six feet, he\'s an assistant at a butcher\'s shop, and wears size 9 shoes. What does he weigh?$meat
+    </string>
+
+    <string name="r4">
+If you have me, you want to share me. If you share me, you haven\'t got me. What am I?$secret
+    </string>
+    <string name="r5">
+What gets broken without being held?$promise
+    </string>
+    <string name="t1">
+        You found acient machine to encrypt messages. Try to encrypt word beer in such way that machine will produce output eijx.$beer
+    </string>
 </resources>

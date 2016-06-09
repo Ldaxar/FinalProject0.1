@@ -1,4 +1,4 @@
-package com.example.adam.finalproject01.GameLogic.MazeLogic.Events;
+package com.example.adam.finalproject01.GameLogic.MazeLogic.Events.SensorEvents;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -7,6 +7,9 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Vibrator;
+
+import com.example.adam.finalproject01.GameLogic.MazeLogic.Events.Event;
+import com.example.adam.finalproject01.Main;
 
 /**
  * Created by Adam on 27/05/16.
@@ -22,9 +25,9 @@ public abstract class  SensorEvent extends Event implements Runnable
     protected SensorEventListener mListener;
     protected Vibrator mVibrator;
 
-    SensorEvent(String description, Integer sensorType, Context mContext) {
-        super(description);
-        this.mContext = mContext;
+    SensorEvent(String description, Integer sensorType, Main m) {
+        super(description, m);
+        this.mContext = m.getApplicationContext();
         mSensorManager = (SensorManager) mContext.getSystemService(mContext.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(sensorType);
         mVibrator = (Vibrator)mContext.getSystemService(mContext.VIBRATOR_SERVICE);
@@ -40,6 +43,7 @@ public abstract class  SensorEvent extends Event implements Runnable
         //Unregister the listener
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(mListener);
+           // mVibrator.cancel();
         }
 
         if (mHandlerThread.isAlive())

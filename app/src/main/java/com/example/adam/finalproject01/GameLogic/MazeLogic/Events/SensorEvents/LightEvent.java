@@ -1,25 +1,26 @@
-package com.example.adam.finalproject01.GameLogic.MazeLogic.Events;
+package com.example.adam.finalproject01.GameLogic.MazeLogic.Events.SensorEvents;
 
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import com.example.adam.finalproject01.Main;
+
 /**
  * Created by Adam on 27/05/16.
  */
-public class MagnometricEvent extends SensorEvent
+public class LightEvent extends SensorEvent
 {
-    public MagnometricEvent(String description, Integer sensorType, Context mContext) {
-        super(description, sensorType, mContext);
+    public LightEvent(String description, Integer sensorType, Main m) {
+        super(description, sensorType, m);
     }
 
     @Override
     public void run()
     {
-        mHandlerThread = new HandlerThread("AccelerometerLogListener");
+        mHandlerThread = new HandlerThread("LightLogListener");
         mHandlerThread.start();
         handler = new Handler(mHandlerThread.getLooper());
 
@@ -35,10 +36,11 @@ public class MagnometricEvent extends SensorEvent
                 {
                     int result=(int)event.values[0];
 
-                    if (event.values[0]>35)
+                    if (event.values[0]<5)
                     {
 
                         mVibrator.vibrate(250);
+
                         cleanThread();
                     }
                     //ifClicked=false;

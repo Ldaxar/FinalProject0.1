@@ -22,6 +22,7 @@ public class Room
         }
         else
         {
+            if (isExit) e.setDescription("YOU WON");
             this.e=e;
             this.isExit=isExit;
         }
@@ -42,5 +43,12 @@ public class Room
 
     public Event getE() {
         return e;
+    }
+
+    public void setE(Event e) {this.e=e;}
+
+    public Boolean getIsExit()
+    {
+        return isExit;
     }
 }

@@ -38,7 +38,7 @@ public class Player extends Character
     public Boolean moveWest ()
     {
         Integer attempt=x-1;
-        if (pm.west(attempt))
+        if (pm.west(attempt)&& pm.getRoom(x,y).getE().getIsFinished()==true)
         {
             x=attempt;
             return true;
@@ -50,7 +50,8 @@ public class Player extends Character
     {
 
         Integer attempt=y-1;
-        if (pm.north(attempt))
+
+        if (pm.north(attempt)&& pm.getRoom(x,y).getE().getIsFinished()==true)
         {
             y=attempt;
             return true;
@@ -60,7 +61,12 @@ public class Player extends Character
     public Boolean moveEast ()
     {
         Integer attempt=x+1;
-        if (pm.east(attempt))
+        if (x==0 && y==0)
+        {
+            x=1;
+            return true;
+        }
+        if (pm.east(attempt)&& pm.getRoom(x,y).getE().getIsFinished()==true)
         {
             x=attempt;
             return true;
@@ -70,7 +76,12 @@ public class Player extends Character
     public Boolean moveSouth ()
     {
         Integer attempt=y+1;
-        if (pm.south(attempt))
+        if (x==0 && y==0)
+        {
+            y=1;
+            return true;
+        }
+        if (pm.south(attempt) && pm.getRoom(x,y).getE().getIsFinished()==true )
         {
             y=attempt;
             return true;
